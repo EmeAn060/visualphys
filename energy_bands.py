@@ -128,10 +128,10 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
 
             fig = plt.figure()
 
-            band0 = plt.plot(k_x_axis, energy_b0_2d, label = "omega_0", color=c0)
-            band1 = plt.plot(k_x_axis, energy_b1_2d, label = "omega_1", color=c1)
-            band2 = plt.plot(k_x_axis, energy_b2_2d, label = "omega_2", color=c2)
-            band3 = plt.plot(k_x_axis, energy_b3_2d, label = "omega_3", color=c3)
+            band0 = plt.plot(k_x_axis, energy_b0_2d, label = "band 0", color=c0)
+            band1 = plt.plot(k_x_axis, energy_b1_2d, label = "band 1", color=c1)
+            band2 = plt.plot(k_x_axis, energy_b2_2d, label = "band 2", color=c2)
+            band3 = plt.plot(k_x_axis, energy_b3_2d, label = "band 3", color=c3)
 
             energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
             energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
