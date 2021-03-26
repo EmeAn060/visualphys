@@ -8,6 +8,7 @@ if version_info[0] < 3:
 from mayavi import mlab
 from mlab_latex_out import mlab_imshow_latex
 
+#TODO: integrate LaTeX-formulas in axis- and plotlabels
 
 # Colors for plots c0 for band 0, c1 for band 1 etc.
 c0 = (0.0,0.0,0.0)
@@ -56,13 +57,11 @@ def show_plot_3D_omega(filename,transparency = False):
             band2.actor.actor.scale = ax_scale
             band3.actor.actor.scale = ax_scale
 
-            latex_obj = mlab_imshow_latex('\omega')
-
             mlab.view(azimuth=225, elevation=70, distance=15, focalpoint=[0., 0., 0.])
             mlab.outline(band0, color=(.7, .7, .7), extent=ax_extent)
             mlab.axes(band0, color=(.7, .7, .7), extent=ax_extent,
                       ranges=ax_ranges,
-                      xlabel='k1', ylabel='k2', zlabel=latex_obj)
+                      xlabel='k1', ylabel='k2', zlabel='Energy[meV]')
 
             if transparency:    
                 band0.actor.property.opacity = 0.5
@@ -139,7 +138,7 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
             ax_ranges = [np.min(k1_values), np.max(k1_values), np.min(k2_values), np.max(k2_values), energy_min, energy_max]
 
             plt.xlabel(x_label)
-            plt.ylabel("$\omega$")
+            plt.ylabel("Energy [meV]")
             plt.title(plot_title)
 
             plt.savefig(dirname+'/'+filename.replace('.txt','_2D_vs_{}_at_{}_{:.2f}.png'.format(x_label,k_param_label,k_param)))
