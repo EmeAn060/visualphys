@@ -137,10 +137,10 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
 
             fig = plt.figure()
 
-            band0 = plt.plot(k_x_axis, energy_b0_2d, label = "band 0", color=c0)
-            band1 = plt.plot(k_x_axis, energy_b1_2d, label = "band 1", color=c1)
-            band2 = plt.plot(k_x_axis, energy_b2_2d, label = "band 2", color=c2)
-            band3 = plt.plot(k_x_axis, energy_b3_2d, label = "band 3", color=c3)
+            band0 = plt.plot(k_x_axis, energy_b0_2d, label = "Band 0", color=c0)
+            band1 = plt.plot(k_x_axis, energy_b1_2d, label = "Band 1", color=c1)
+            band2 = plt.plot(k_x_axis, energy_b2_2d, label = "Band 2", color=c2)
+            band3 = plt.plot(k_x_axis, energy_b3_2d, label = "Band 3", color=c3)
 
             energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
             energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
@@ -148,6 +148,7 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
 
             plt.xlabel(k_x_label)
             plt.ylabel("Energy [meV]")
+            plt.legend()
             plt.title(plot_title)
             plt.savefig(dirname+'/'+filename.replace('.txt','_2D_vs_{}_at_{}_{:.2f}.png'.format(k_x,k_param,k_param_value)))
             plt.close()
