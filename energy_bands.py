@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import sys
+import ntpath
 
 from sys import version_info
 if version_info[0] < 3:
@@ -78,7 +80,10 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
     '''
     Plots and saves 2D plot of all bands vs k1/k2 for one value of k2/k1
     '''
-    dirname = 'dispersion_data'
+    exec_file_path = sys.argv[0].replace('.py','')
+    exec_filename = ntpath.basename(exec_file_path)
+    exec_dir_path = exec_file_path.replace(exec_filename,'')
+    dirname = exec_dir_path+'dispersion_data'
     if not os.path.exists(dirname):
         print('No data generated yet.')
     else:
