@@ -63,7 +63,7 @@ def show_plot_3D_omega(filename,transparency = False):
             mlab.outline(band0, color=(.7, .7, .7), extent=ax_extent)
             mlab.axes(band0, color=(.7, .7, .7), extent=ax_extent,
                       ranges=ax_ranges,
-                      xlabel='k1', ylabel='k2', zlabel='Energy[meV]')
+                      xlabel='wave vector k1', ylabel='wave vector k2', zlabel='Energy [meV]')
 
             if transparency:    
                 band0.actor.property.opacity = 0.5
