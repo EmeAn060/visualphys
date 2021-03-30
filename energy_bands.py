@@ -101,15 +101,17 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
             energy_b3 = data[:,5].reshape((len_k1,len_k2))       
 
             if type(k1) == str:
-                x_label = 'k1'
+                k_x = 'k1'
+                k_x_label = 'wave vector $k_1$'
                 k_x_axis = k1_values
                 
 
-                k_param_label = 'k2'
+                k_param = 'k2'
+                k_param_value = k2
                 k_param_idx = np.abs(k2_values-k2).argmin()
-                k_param = k2_values[k_param_idx]
+                k_param_value = k2_values[k_param_idx]
                 
-                plot_title = "2D plot at k2 = {:.2f}".format(k_param)
+                plot_title = "2D plot at $k_2$ = {:.2f}".format(k_param_value)
 
                 energy_b0_2d = energy_b0[:,k_param_idx]
                 energy_b1_2d = energy_b1[:,k_param_idx]
@@ -117,14 +119,16 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
                 energy_b3_2d = energy_b3[:,k_param_idx]
                 
             else:
-                x_label = 'k2'
+                k_x = 'k2'
+                k_x_label = 'wave vector $k_2$'
                 k_x_axis = k2_values
                 
-                k_param_label = 'k1'
+                k_param = 'k1'
+                k_param_value = k1
                 k_param_idx = np.abs(k1_values-k1).argmin()
-                k_param = k1_values[k_param_idx]
+                k_param_value = k1_values[k_param_idx]
                 
-                plot_title = '2D plot at k1 = {:.2f}'.format(k_param)
+                plot_title = '2D plot at $k_1$ = {:.2f}'.format(k_param_value)
                 
                 energy_b0_2d = energy_b0[k_param_idx,:]
                 energy_b1_2d = energy_b1[k_param_idx,:]
@@ -142,10 +146,9 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
             energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
             ax_ranges = [np.min(k1_values), np.max(k1_values), np.min(k2_values), np.max(k2_values), energy_min, energy_max]
 
-            plt.xlabel(x_label)
+            plt.xlabel(k_x_label)
             plt.ylabel("Energy [meV]")
             plt.title(plot_title)
-
-            plt.savefig(dirname+'/'+filename.replace('.txt','_2D_vs_{}_at_{}_{:.2f}.png'.format(x_label,k_param_label,k_param)))
+            plt.savefig(dirname+'/'+filename.replace('.txt','_2D_vs_{}_at_{}_{:.2f}.png'.format(k_x,k_param,k_param_value)))
             plt.close()
             plt.clf()
