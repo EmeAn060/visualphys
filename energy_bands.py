@@ -23,7 +23,11 @@ def show_plot_3D_omega(filename,transparency = False):
     '''
     Shows 3D plot of all bands. Can be saved using the if needed.
     '''
-    dirname = 'dispersion_data'
+    exec_file_path = sys.argv[0].replace('.py','')
+    exec_filename = ntpath.basename(exec_file_path)
+    exec_dir_path = exec_file_path.replace(exec_filename,'')
+    dirname = exec_dir_path+'dispersion_data'
+    
     if not os.path.exists(dirname):
         print('No data generated yet.')
     else:
