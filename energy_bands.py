@@ -19,7 +19,9 @@ c2 = (0.0,1.0,0.0)
 c3 = (0.0, 0.0, 1.0)   
 
 
-def show_plot_3D_omega(filename,transparency = False):
+
+def show_plot_3D_omega(filename,transparency = False,energy_min=None,
+                                                     energy_max=None):
     '''
     Shows 3D plot of all bands. Can be saved using the if needed.
     '''
@@ -52,8 +54,11 @@ def show_plot_3D_omega(filename,transparency = False):
             band2 = mlab.surf(k1_values, k2_values, energy_b2,color=c2)
             band3 = mlab.surf(k1_values, k2_values, energy_b3,color=c3)
 
-            energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
-            energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+            if energy_max == None:
+                energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+            if energy_min == None:
+                energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+
             ax_ranges = [np.min(k1_values), np.max(k1_values), np.min(k2_values), np.max(k2_values), energy_min, energy_max]
             ax_scale = [1.0, 1.0, 0.4]
             ax_extent = ax_ranges * np.repeat(ax_scale, 2)
@@ -80,7 +85,8 @@ def show_plot_3D_omega(filename,transparency = False):
             mlab.show()
 
 
-def plot_2D_omega_from_3D_data(filename,k1,k2):
+def plot_2D_omega_from_3D_data(filename,k1,k2,energy_min=None,
+                                              energy_max=None):
     '''
     Plots and saves 2D plot of all bands vs k1/k2 for one value of k2/k1
     '''
@@ -141,14 +147,18 @@ def plot_2D_omega_from_3D_data(filename,k1,k2):
 
             fig = plt.figure()
 
+            if energy_max == None:
+                energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+            if energy_min == None:
+                energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+
+            plt.xlim(np.min(k_x_axis),np.max(k_x_axis))
+            plt.ylim(energy_min,energy_max)
+
             band0 = plt.plot(k_x_axis, energy_b0_2d, label = "Band 0", color=c0)
             band1 = plt.plot(k_x_axis, energy_b1_2d, label = "Band 1", color=c1)
             band2 = plt.plot(k_x_axis, energy_b2_2d, label = "Band 2", color=c2)
             band3 = plt.plot(k_x_axis, energy_b3_2d, label = "Band 3", color=c3)
-
-            energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
-            energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
-            ax_ranges = [np.min(k1_values), np.max(k1_values), np.min(k2_values), np.max(k2_values), energy_min, energy_max]
 
             plt.xlabel(k_x_label)
             plt.ylabel("Energy [meV]")
