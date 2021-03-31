@@ -167,3 +167,126 @@ def plot_2D_omega_from_3D_data(filename,k1,k2,energy_min=None,
             plt.savefig(dirname+'/'+filename.replace('.txt','_2D_vs_{}_at_{}_{:.2f}.png'.format(k_x,k_param,k_param_value)))
             plt.close()
             plt.clf()
+
+
+def plot_2D_omega_path_k1_k2_space(filename,energy_min=None, energy_max=None):
+    '''
+    Plot path from Gamma (0,0) to X (pi,0) to M (pi,pi) to Gamma(0,0)
+    '''
+    exec_file_path = sys.argv[0].replace('.py','')
+    exec_filename = ntpath.basename(exec_file_path)
+    exec_dir_path = exec_file_path.replace(exec_filename,'')
+    dirname = exec_dir_path+'dispersion_data'
+    
+    if not os.path.exists(dirname):
+        print('No data generated yet.')
+    else:
+        if not os.path.exists(dirname+'/'+filename):
+            print('"{}/{}" not found.'.format(dirname,filename))
+        else:
+            data = np.loadtxt(dirname+'/'+filename)
+            k1_values = data[:,0]
+            k2_values = data[:,1]
+
+            k1_un_values = np.unique(k1_values)
+            k2_un_values = np.unique(k2_values)
+
+            len_k1 = len(k1_un_values)
+            len_k2 = len(k2_un_values)
+
+            energy_b0 = data[:,2].reshape((len_k1,len_k2))
+            energy_b1 = data[:,3].reshape((len_k1,len_k2))
+            energy_b2 = data[:,4].reshape((len_k1,len_k2))
+            energy_b3 = data[:,5].reshape((len_k1,len_k2))            
+
+            idx_start_pt = 0
+            idx_end_pt = len_k1-1
+
+
+            k_path_gamma_X = k1_un_values - k2_un_values[idx_start_pt]
+            k_path_X_M = k1_un_values[idx_end_pt] - k2_un_values
+            k_path_M_gamma = np.flip(k1_un_values) - np.flip(k2_un_values)
+
+            k_path_tot = np.concatenate((k_path_gamma_X, k_path_X_M, k_path_M_gamma))
+
+            energy_b0_path_gamma_X = energy_b0[:,idx_start_pt]
+            energy_b0_path_X_M = energy_b0[idx_end_pt,:]
+
+            energy_b0_path_M_gamma = np.zeros(len_k1)
+            for i in np.arange(len_k1):
+                energy_b0_path_M_gamma[i] = energy_b0[i,i]
+
+            energy_b0_path_tot = np.concatenate((energy_b0_path_gamma_X,
+                                                 energy_b0_path_X_M,
+                                                 np.flip(energy_b0_path_M_gamma)))
+
+            energy_b1_path_gamma_X = energy_b1[:,idx_start_pt]
+            energy_b1_path_X_M = energy_b1[idx_end_pt,:]
+
+            energy_b1_path_M_gamma = np.zeros(len_k1)
+            for i in np.arange(len_k1):
+                energy_b1_path_M_gamma[i] = energy_b1[i,i]
+
+            energy_b1_path_tot = np.concatenate((energy_b1_path_gamma_X,
+                                                 energy_b1_path_X_M,
+                                                 np.flip(energy_b1_path_M_gamma)))
+
+            energy_b2_path_gamma_X = energy_b2[:,idx_start_pt]
+            energy_b2_path_X_M = energy_b2[idx_end_pt,:]
+
+            energy_b2_path_M_gamma = np.zeros(len_k1)
+            for i in np.arange(len_k1):
+                energy_b2_path_M_gamma[i] = energy_b2[i,i]
+
+            energy_b2_path_tot = np.concatenate((energy_b2_path_gamma_X,
+                                                 energy_b2_path_X_M,
+                                                 np.flip(energy_b2_path_M_gamma)))
+
+            energy_b3_path_gamma_X = energy_b3[:,idx_start_pt]
+            energy_b3_path_X_M = energy_b3[idx_end_pt,:]
+
+            energy_b3_path_M_gamma = np.zeros(len_k1)
+            for i in np.arange(len_k1):
+                energy_b3_path_M_gamma[i] = energy_b3[i,i]
+
+            energy_b3_path_tot = np.concatenate((energy_b3_path_gamma_X,
+                                                 energy_b3_path_X_M,
+                                                 np.flip(energy_b3_path_M_gamma)))
+
+            fig, ax = plt.subplots(1,1)
+            x = np.arange(len(k_path_tot))
+            ax.set_xticks(x)
+
+            print(x)
+            xxxlabels = ['' for kk in k_path_tot]
+            xxxlabels[0] = "$\Gamma$"
+            xxxlabels[-1] = "$\Gamma$"
+            xxxlabels[len_k1] = "X"
+            xxxlabels[2*len_k1] = "M"
+
+            print(k_path_tot[len_k1])
+            print(k_path_tot[2*len_k1-1])
+
+
+            print(xxxlabels)
+            ax.set_xticklabels(xxxlabels)
+
+            if energy_max == None:
+                energy_max = max(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+            if energy_min == None:
+                energy_min = min(np.unique([energy_b0,energy_b1,energy_b2,energy_b3]))
+
+            plt.ylim(energy_min,energy_max)
+
+            band0 = ax.plot(x, energy_b0_path_tot, label = "Band 0", color=c0)
+            band1 = ax.plot(x, energy_b1_path_tot, label = "Band 1", color=c1)
+            band2 = ax.plot(x, energy_b2_path_tot, label = "Band 2", color=c2)
+            band3 = ax.plot(x, energy_b3_path_tot, label = "Band 3", color=c3)
+
+            plt.xlabel("Path in k1-k2-space")
+            plt.ylabel("Energy [meV]")
+            plt.legend()
+            fig.canvas.draw()
+            plt.savefig(dirname+'/'+filename.replace('.txt','_2D_path_k1-k2-space.png'))
+            plt.close()
+            plt.clf()
